@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdio>
 
 using namespace std;
 /*checkSudoku - sprawdza, czy tablica 9x9 elementow jest wypelnionym poprawnie diagramem gry Sudoku.
@@ -64,14 +65,13 @@ int main()
 		cout << "NOK";
 	}
 	std::cout << std::endl << std::endl << "Press enter to exit...";
-	//getchar();
+	getchar();
 	return 0;
 }
 bool checkSudoku(int *tab)
 {
 	bool isCorrect = true; //true: if the numbers are not repeated in any row and column, but also in a small square	
-	std::cout << std::endl;
-	bool answer[10];
+	bool answer[10];//number from sudoku board is an index of answer table
 	//chacking rows
 	for (int i = 0; i < 9; i++){
 		//clear answer table
@@ -79,18 +79,14 @@ bool checkSudoku(int *tab)
 		
 		//put true in answer[*(tab+j)]
 		for (int j = 0; j < 9; j++){
-			std::cout << " " << *(tab+j + 9*i);
 			if (true == answer[*(tab+j + 9*i)]){
 				isCorrect = false;
 			}else{
 				answer[*(tab+j + 9*i)] = true;
 			}			
 		}
-		std::cout << " | ";
-		for (int z = 1; z < 10; z++) std::cout << " " << answer[z];
-		std::cout << std::endl;
 	}
-	std::cout << std::endl;
+
 	//chacking col
 	for (int i = 0; i < 9; i++){
 		//clear answer table
@@ -98,41 +94,31 @@ bool checkSudoku(int *tab)
 		
 		//put true in answer[*(tab+j)]
 		for (int j = 0; j < 9; j++){
-			std::cout << " " << *(tab+9*j + i);
 			if (true == answer[*(tab+9*j + i)]){
 				isCorrect = false;
 			}else{
 				answer[*(tab+9*j + i)] = true;
 			}
 		}
-		std::cout << " | kolumna " << i;
-		for (int z = 1; z < 10; z++) std::cout << std::endl << answer[z];
-		std::cout << std::endl;
 	}
 	
-	int x = 3, y = 27;
+	int x , y ;
 	for (x = 0; x < 9 ; x+=3){
 		for (y = 0; y < 81; y +=27){
 			//clear answer table
 			for (int z = 1; z < 10; z++) answer[z] = false;
+			
 			//check a small square			
 			for( int i = 0; i < 3; i ++){
 				for ( int j = 0; j < 3; j++){
-					std::cout << " " << *(tab + 9*i +j + x+y);
 					if (true == answer[*(tab + 9*i +j + x+y)]){
 						isCorrect = false;
 					}else{
 						answer[*(tab + 9*i +j + x+y)] = true;
 					}
 				}//j
-				std::cout << std::endl;
 			}//i
-			std::cout << std::endl;
 		}
-		std::cout << std::endl;
 	}
-	
-	
-
 	return isCorrect;
 }
