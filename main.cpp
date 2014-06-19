@@ -1,7 +1,6 @@
 #include <iostream>
 #include <stddef.h>
 #include <cstdio>
-#include <fstream>
 
 using namespace std;
 //TODO Add opportunity sending to program own game boards of sudoku.
@@ -14,6 +13,8 @@ Zwraca
 	false- gdy tablica nie spelnia zasad gry Sudoku
 */
 extern bool checkSudoku(int *tab);
+extern bool getboard(int * tab, std::string fileName);
+extern void printBoard( int * tam);
 
 /*tablica do testow, prawidlowo wypelniona*/
 static int sudokuCorrect[9][9] =
@@ -45,36 +46,49 @@ static int sudokuNotCorrect14[9][9] = //element rzad 1, kolumna 4 nie pasuje
 int main(int argc, char * argv[])
 {
 	if (argc > 1){
-		cout << endl << "loading sudoku boards from file " << argv[1] << std::endl;
+		cout << endl << "loading sudoku boards from file: " << argv[1] << std::endl << std::endl;
+		int sudoku[9][9] = {{0}};
+		int * tam =  &sudoku[0][0];
+		if ( getboard(tam, argv[1])){
+			if(checkSudoku(tam)){
+				std::cout << "\nFill-in correct\n";
+			}else{
+				std::cout << "\nFill-in not correct\n";
+			}
+			printBoard(tam);
+		}
+
+
 	}else{
 		cout << endl << "built-in boards" << std::endl;
+		cout << endl << "test Correct ";
+
+		int *pSudoku = &sudokuCorrect[0][0];
+		
+		if (checkSudoku(pSudoku) == true)
+		{
+			cout << "OK";// Test passed
+		}
+		else
+		{
+			cout << "NOK";
+		}
+		printBoard(pSudoku);
+		cout << endl << "test 14 ";
+	
+		pSudoku = &sudokuNotCorrect14[0][0];
+	
+		if (checkSudoku(pSudoku) == false)
+		{
+			cout << "OK";// Test passed
+		}
+		else
+		{
+			cout << "NOK";
+		}
+		printBoard(pSudoku);
 	}
 	
-	cout << endl << "test Correct ";
-
-	int *pSudoku = &sudokuCorrect[0][0];
-	
-	if (checkSudoku(pSudoku) == true)
-	{
-		cout << "OK";// Test passed
-	}
-	else
-	{
-		cout << "NOK";
-	}
-
-	cout << endl << "test 14 ";
-
-	pSudoku = &sudokuNotCorrect14[0][0];
-
-	if (checkSudoku(pSudoku) == false)
-	{
-		cout << "OK";// Test passed
-	}
-	else
-	{
-		cout << "NOK";
-	}
 	std::cout << std::endl << std::endl << "Press enter to exit...";
 	getchar();
 	return 0;
